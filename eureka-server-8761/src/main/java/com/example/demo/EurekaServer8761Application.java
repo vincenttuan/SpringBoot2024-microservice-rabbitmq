@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class HelloService8081Application {
+public class EurekaServer8761Application {
 
 	public static void main(String[] args) {
-		SpringApplication.run(HelloService8081Application.class, args);
+		SpringApplication.run(EurekaServer8761Application.class, args);
 	}
 
 }
