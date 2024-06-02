@@ -27,5 +27,9 @@ public class ApiController {
 		return "Welcome service: DOWN";
 	}
 	
+	// Homework:
 	// UP 請自行練習
+	// 這邊所指的是 info 的片面改變
+	// 若要改變 health 則必須要實作 HealthIndicator
+	// 並回傳 Health.down()
 }
