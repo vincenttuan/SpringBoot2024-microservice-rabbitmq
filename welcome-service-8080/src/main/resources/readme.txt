@@ -62,7 +62,7 @@ EXPOSE 8080
 ** 注意請先要啟動 Docker Desktop **
 
 2.構建 Docker 影像：
-首先，確保您已經在項目根目錄下（包含 Dockerfile 的位置）成功執行了 Maven 打包命令 mvn clean package，並且 target 目錄中生成了 welcome-service-0.0.1-SNAPSHOT.jar 文件。
+首先，確保您已經在專案根目錄下（包含 Dockerfile 的位置）成功執行了 Maven 打包命令 mvn clean package，並且 target 目錄中生成了 welcome-service-0.0.1-SNAPSHOT.jar 文件。
 然後，在包含 Dockerfile 的目錄下運行以下命令來構建 Docker 鏡像：
 
 docker build -t welcome-service . 
