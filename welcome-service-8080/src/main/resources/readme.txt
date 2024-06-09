@@ -25,6 +25,8 @@ welcome-service -> Run As -> Maven build -> Goals 輸入 "clean package" -> 按�
 java -jar target/打包名稱.jar
 例如: java -jar target/welcome-service-8080-0.0.1-SNAPSHOT.jar
 
+java -jar C:\SpringBoot2024-microservice-rabbitmq\welcome-service-8080\target\welcome-service-8080-0.0.1-SNAPSHOT.jar
+
 停止服務
 Ctrl + C
 
