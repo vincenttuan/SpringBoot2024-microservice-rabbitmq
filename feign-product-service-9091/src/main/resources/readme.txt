@@ -40,7 +40,7 @@ FROM openjdk:17-jdk-slim
 WORKDIR /app
 
 # 將應用的 jar 文件從構建上下文複製到容器內
-COPY target/product-service-9091-0.0.1-SNAPSHOT.jar /app/product-service.jar
+COPY target/feign-product-service-9091-0.0.1-SNAPSHOT.jar /app/product-service.jar
 
 # 容器啟動時執行的命令，啟動 Spring Boot 應用
 CMD ["java", "-jar", "/app/product-service.jar"]
