@@ -36,7 +36,7 @@ public class OrderService {
 	}
 	
 	// 單筆訂單
-	private OrderDto getOrderById(Integer orderId) {
+	public OrderDto getOrderById(Integer orderId) {
 		Optional<Order> orderOpt = orderDao.findById(orderId);
 		if(orderOpt.isEmpty()) {
 			return null;
