@@ -24,9 +24,9 @@ public class OrderController {
 		OrderDto orderDto = orderService.getOrderById(orderId);
 		ApiResponse<OrderDto> apiResponse = null;
 		if(orderDto == null) {
-			apiResponse = new ApiResponse<>(false, "查無資料", null);
+			apiResponse = new ApiResponse<>(false, "查無訂單資料", null);
 		} else {
-			apiResponse = new ApiResponse<>(true, "有資料", orderDto);
+			apiResponse = new ApiResponse<>(true, "有訂單資料", orderDto);
 		}
 		return ResponseEntity.ok(apiResponse);
 	}
