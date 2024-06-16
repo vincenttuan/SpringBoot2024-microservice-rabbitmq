@@ -1,6 +1,8 @@
 package com.example.demo.service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -60,6 +62,11 @@ public class OrderService {
 		return orderDto;
 	}
 	
+	// Orders 多筆訂單 po 轉 dto
+	private List<OrderDto> convertToDto(List<Order> orders) {
+		return orders.stream().map(order -> convertToDto(order)).collect(Collectors.toList());
+	}
+	
 	// 單筆訂單
 	public OrderDto getOrderById(Integer orderId) {
 		Optional<Order> orderOpt = orderDao.findById(orderId);
@@ -69,6 +76,13 @@ public class OrderService {
 		Order order = orderOpt.get();
 		// 將 po 轉 dto
 		return convertToDto(order);
+	}
+	
+	// 所有訂單
+	public List<OrderDto> findAll() {
+		List<Order> orders = orderDao.findAll();
+		// 將 List po 轉 List dto
+		return convertToDto(orders);
 	}
 	
 }
