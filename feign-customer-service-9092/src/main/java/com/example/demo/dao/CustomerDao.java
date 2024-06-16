@@ -20,10 +20,12 @@ public class CustomerDao {
 		customers.add(new Customer(3, "Cathy", "cathy@gmail.com"));
 	}
 	
+	// 查詢全部
 	public List<Customer> findAll() {
 		return customers;
 	}
 	
+	// 查詢單筆
 	public Optional<Customer> findById(Integer id) {
 		return customers.stream().filter(customer -> customer.getId().equals(id)).findFirst();
 	}
