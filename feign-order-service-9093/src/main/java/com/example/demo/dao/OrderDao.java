@@ -2,6 +2,7 @@ package com.example.demo.dao;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.springframework.stereotype.Repository;
@@ -37,6 +38,16 @@ public class OrderDao {
 		orders.add(order2);
 		orders.add(order3);
 		orders.add(order4);
+	}
+	
+	// 查詢所有訂單
+	public List<Order> findAll() {
+		return orders;
+	}
+	
+	// 查詢單筆
+	public Optional<Order> findById(Integer id) {
+		return orders.stream().filter(order -> order.getId().equals(id)).findFirst();
 	}
 	
 }
