@@ -1,9 +1,6 @@
 package com.example.demo;
 
-import java.util.List;
-
 import com.example.demo.dao.OrderDao;
-import com.example.demo.model.po.Order;
 
 public class TestOrderDao {
 	public static void main(String[] args) {
