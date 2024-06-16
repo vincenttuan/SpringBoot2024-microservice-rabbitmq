@@ -64,7 +64,8 @@ public class OrderService {
 	
 	// Orders 多筆訂單 po 轉 dto
 	private List<OrderDto> convertToDto(List<Order> orders) {
-		return orders.stream().map(order -> convertToDto(order)).collect(Collectors.toList());
+		//return orders.stream().map(order -> convertToDto(order)).collect(Collectors.toList());
+		return orders.stream().map(this::convertToDto).collect(Collectors.toList());
 	}
 	
 	// 單筆訂單
