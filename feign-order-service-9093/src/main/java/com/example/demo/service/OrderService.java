@@ -6,10 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.client.CustomerClient;
+import com.example.demo.client.ProductClient;
 import com.example.demo.dao.OrderDao;
+import com.example.demo.model.dto.ItemDto;
 import com.example.demo.model.dto.OrderDto;
 import com.example.demo.model.po.Customer;
+import com.example.demo.model.po.Item;
 import com.example.demo.model.po.Order;
+import com.example.demo.model.po.Product;
 
 @Service
 public class OrderService {
@@ -19,6 +23,22 @@ public class OrderService {
 	
 	@Autowired
 	private CustomerClient customerClient;
+	
+	@Autowired
+	private ProductClient productClient;
+	
+	// Item 單筆訂單項目 po 轉 dto
+	private ItemDto convertToDto(Item item) {
+		ItemDto itemDto = new ItemDto();
+		itemDto.setId(item.getId());
+		itemDto.setQuantity(item.getQuantity());
+		
+		// 透過 Feign 取得遠端商品資料
+		Product product = productClient.getProductById(item.getProductId()).getData();
+		itemDto.setProduct(product);
+		
+		return itemDto;
+	}
 	
 	// Order 單筆訂單 po 轉 dto
 	private OrderDto convertToDto(Order order) {
@@ -31,6 +51,11 @@ public class OrderService {
 		orderDto.setCustomer(customer);
 		
 		// 透過 Feign 取得遠端商品資料
+		for(Item item : order.getItems()) {
+			// Item po 轉 dto
+			ItemDto itemDto = convertToDto(item);
+			orderDto.getItemDtos().add(itemDto);
+		}
 		
 		return orderDto;
 	}
