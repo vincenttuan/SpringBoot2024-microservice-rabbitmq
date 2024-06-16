@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,5 +32,18 @@ public class OrderController {
 		}
 		return ResponseEntity.ok(apiResponse);
 	}
+	
+	// 查詢全部訂單
+	@GetMapping()
+	public ResponseEntity<ApiResponse<List<OrderDto>>> findAll() {
+		List<OrderDto> orderDtos = orderService.findAll();
+		ApiResponse<List<OrderDto>> apiResponse = null;
+		if(orderDtos.isEmpty()) {
+			apiResponse = new ApiResponse<>(false, "查無訂單資料", null);
+		} else {
+			apiResponse = new ApiResponse<>(true, "資料筆數:" + orderDtos.size(), orderDtos);
+		}
+		return ResponseEntity.ok(apiResponse);
+	} 
 	
 }
