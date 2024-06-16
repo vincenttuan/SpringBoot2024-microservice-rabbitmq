@@ -35,7 +35,7 @@ public class CustomerController {
 	}
 	
 	// 單筆查詢
-	@GetMapping("/id")
+	@GetMapping("/{id}")
 	public ResponseEntity<ApiResponse<Customer>> findById(@PathVariable Integer id) {
 		Optional<Customer> customerOpt = customerService.findById(id);
 		ApiResponse<Customer> apiResponse = null;
