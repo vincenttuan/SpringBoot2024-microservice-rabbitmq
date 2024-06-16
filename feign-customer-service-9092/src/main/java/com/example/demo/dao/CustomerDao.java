@@ -1,5 +1,5 @@
 package com.example.demo.dao;
 
-public class CustomerService {
+public class CustomerDao {
 
 }
