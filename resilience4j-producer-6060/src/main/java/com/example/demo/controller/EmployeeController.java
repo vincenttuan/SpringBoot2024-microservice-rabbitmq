@@ -14,6 +14,7 @@ public class EmployeeController {
 	@GetMapping("/{empId}")
 	public Employee getEmployee(@PathVariable Integer empId) throws InterruptedException {
 		
+		// 若有錯誤發生會由處理特定的全局異常來處理
 		if(empId < 1 ) {
 			throw new RuntimeException("無此員編");
 		} else if(empId >= 10) {
