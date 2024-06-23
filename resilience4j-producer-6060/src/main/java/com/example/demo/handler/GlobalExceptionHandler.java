@@ -15,8 +15,8 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(RuntimeException.class)
 	public ResponseEntity<ErrorMessage> handleRuntimeException(RuntimeException ex, WebRequest request) {
 		// 自定義錯誤回應
-		ErrorMessage errorMessage = new ErrorMessage(HttpStatus.NO_CONTENT.value(), ex.getMessage());
-		return new ResponseEntity<>(errorMessage, HttpStatus.NO_CONTENT);
+		ErrorMessage errorMessage = new ErrorMessage(HttpStatus.NOT_FOUND.value(), ex.getMessage());
+		return new ResponseEntity<>(errorMessage, HttpStatus.NOT_FOUND);
 	}
 	
 	
