@@ -30,12 +30,12 @@ public class RetryService {
 	 * */
 	@Retryable(value = IOException.class, maxAttempts = 4, backoff = @Backoff(delay = 3000L))
 	public String getRetryResponse(String name) throws IOException {
-		System.out.println("Service B getRetryResponse");
 		int randomValue = new Random().nextInt(100);
 		if(randomValue < 80) {
 			System.out.printf("Service B 發生例外! randomValue:%d%n", randomValue);
 			throw new IOException(String.format("Service B 發生例外! randomValue:%d%n", randomValue));
 		}
+		System.out.println("Service B getRetryResponse");
 		return clientService.getResponse(name);
 	}
 	
