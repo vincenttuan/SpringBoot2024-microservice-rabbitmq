@@ -60,6 +60,10 @@ public class EmployeeController {
 	
 	// 回退方法
 	public Employee getEmployeeFallback(Integer empId, Throwable t) {
+		// 此錯誤會由全局異常處理
+		if(empId == 0) {
+			throw new RuntimeException("無此員編 0");
+		}
 		Employee emp = new Employee();
 		emp.setEmpId(empId);
 		emp.setEmpName("Fallback");
