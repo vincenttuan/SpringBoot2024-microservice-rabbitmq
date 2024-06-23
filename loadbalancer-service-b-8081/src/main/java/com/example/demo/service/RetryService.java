@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.retry.annotation.Backoff;
@@ -28,8 +29,13 @@ public class RetryService {
 		exclude：指定不需要重試的異常類型。與value類似，但是是針對於某些異常類型不進行重試。
 	 * */
 	@Retryable(value = IOException.class, maxAttempts = 4, backoff = @Backoff(delay = 3000L))
-	public String getRetryResponse(String name) {
+	public String getRetryResponse(String name) throws IOException {
 		System.out.println("Service B getRetryResponse");
+		int randomValue = new Random().nextInt(100);
+		if(randomValue < 80) {
+			System.out.printf("Service B 發生例外! randomValue:%d%n", randomValue);
+			throw new IOException(String.format("Service B 發生例外! randomValue:%d%n", randomValue));
+		}
 		return clientService.getResponse(name);
 	}
 	
