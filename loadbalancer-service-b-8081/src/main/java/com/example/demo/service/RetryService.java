@@ -32,10 +32,10 @@ public class RetryService {
 	public String getRetryResponse(String name) throws IOException {
 		int randomValue = new Random().nextInt(100);
 		if(randomValue < 80) {
-			System.out.printf("Service B 發生例外! randomValue:%d%n", randomValue);
+			System.out.printf("Service B Error 發生例外! randomValue:%d%n", randomValue);
 			throw new IOException(String.format("Service B 發生例外! randomValue:%d%n", randomValue));
 		}
-		System.out.println("Service B getRetryResponse");
+		System.out.println("Service B getRetryResponse OK");
 		return clientService.getResponse(name);
 	}
 	
@@ -49,10 +49,10 @@ public class RetryService {
 	
 	@Recover
 	public String testRecover(SQLException e) {
-		System.out.printf("因為 Retry 失敗: %s, 所以執行 Recover 的邏輯%n", e.getMessage());
+		System.out.printf("因為 Retry 失敗: %s, 所以執行 Recover 的邏輯 ", e.getMessage());
 		// block of code...
 		
-		return String.format("因為 Retry 失敗: %s, 所以執行 Recover 的邏輯%n", e.getMessage());
+		return String.format("因為 Retry 失敗: %s, 所以執行 Recover 的邏輯 ", e.getMessage());
 	}
 	
 	
