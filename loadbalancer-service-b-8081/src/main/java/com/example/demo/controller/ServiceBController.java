@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +26,7 @@ public class ServiceBController {
 	}
 	
 	@GetMapping("/retry/service-b/{name}")
-	public String getRetryResponse(@PathVariable String name) throws IOException {
+	public String getRetryResponse(@PathVariable String name) throws IOException, SQLException {
 		return retryService.getRetryResponse(name);
 	}
 	

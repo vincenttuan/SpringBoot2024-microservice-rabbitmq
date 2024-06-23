@@ -29,11 +29,14 @@ public class RetryService {
 		exclude：指定不需要重試的異常類型。與value類似，但是是針對於某些異常類型不進行重試。
 	 * */
 	@Retryable(value = IOException.class, maxAttempts = 4, backoff = @Backoff(delay = 3000L))
-	public String getRetryResponse(String name) throws IOException {
+	public String getRetryResponse(String name) throws IOException, SQLException {
 		int randomValue = new Random().nextInt(100);
-		if(randomValue < 80) {
+		if(randomValue < 50) {
 			System.out.printf("Service B Error 發生例外! randomValue:%d%n", randomValue);
-			throw new IOException(String.format("Service B 發生例外! randomValue:%d%n", randomValue));
+			throw new SQLException(String.format("Service B 發生 SQLException 例外! randomValue:%d%n", randomValue));
+		} else if(randomValue < 80) {
+			System.out.printf("Service B Error 發生例外! randomValue:%d%n", randomValue);
+			throw new IOException(String.format("Service B 發生 IOException 例外! randomValue:%d%n", randomValue));
 		}
 		System.out.println("Service B getRetryResponse OK");
 		return clientService.getResponse(name);
@@ -41,18 +44,18 @@ public class RetryService {
 	
 	@Recover
 	public String testRecover(IOException e) {
-		System.out.printf("因為 Retry 失敗: %s, 所以執行 Recover 的邏輯%n", e.getMessage());
+		System.out.printf("IOException 因為 Retry 失敗: %s, 所以執行 Recover 的邏輯%n", e.getMessage());
 		// block of code...
 		
-		return String.format("因為 Retry 失敗: %s, 所以執行 Recover 的邏輯%n", e.getMessage());
+		return String.format("IOException 因為 Retry 失敗: %s, 所以執行 Recover 的邏輯%n", e.getMessage());
 	}
 	
 	@Recover
 	public String testRecover(SQLException e) {
-		System.out.printf("因為 Retry 失敗: %s, 所以執行 Recover 的邏輯 ", e.getMessage());
+		System.out.printf("SQLException 因為 Retry 失敗: %s, 所以執行 Recover 的邏輯 ", e.getMessage());
 		// block of code...
 		
-		return String.format("因為 Retry 失敗: %s, 所以執行 Recover 的邏輯 ", e.getMessage());
+		return String.format("SQLException 因為 Retry 失敗: %s, 所以執行 Recover 的邏輯 ", e.getMessage());
 	}
 	
 	
