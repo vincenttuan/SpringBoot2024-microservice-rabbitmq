@@ -28,7 +28,7 @@ public class RetryService {
 		include：指定需要重試的異常類型。與value類似，但是是針對於某些異常類型進行重試。
 		exclude：指定不需要重試的異常類型。與value類似，但是是針對於某些異常類型不進行重試。
 	 * */
-	@Retryable(value = IOException.class, maxAttempts = 4, backoff = @Backoff(delay = 3000L))
+	@Retryable(value = {IOException.class, SQLException.class}, maxAttempts = 4, backoff = @Backoff(delay = 3000L))
 	public String getRetryResponse(String name) throws IOException, SQLException {
 		int randomValue = new Random().nextInt(100);
 		if(randomValue < 50) {
