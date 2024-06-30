@@ -100,6 +100,7 @@ public class EmployeeController {
 		}
 		
 		// 模擬業務處理延遲
+		// 當 localhost:6060/semaphore/1 同時連續執行多次會印出 "Bulkhead call rejected"
 		Thread.sleep(2000);
 		
 		Employee emp = new Employee();
