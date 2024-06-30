@@ -133,7 +133,6 @@ public class EmployeeController {
 				emp.setEmpName("John" + empId);
 				emp.setDescription("Manager" + empId);
 				emp.setSalary(30000.0 * empId);
-				
 				return emp;
 			} catch (InterruptedException e) {
 				throw new RuntimeException(e);
