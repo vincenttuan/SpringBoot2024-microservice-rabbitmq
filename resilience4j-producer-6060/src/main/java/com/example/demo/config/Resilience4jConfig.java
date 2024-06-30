@@ -151,8 +151,8 @@ public class Resilience4jConfig {
 		TimeLimiter timeLimiter = registry.timeLimiter("employeeTimeLimiter");
 		
 		timeLimiter.getEventPublisher()
-			.onSuccess(event -> System.out.println("RateLimiter success"))
-			.onTimeout(event -> System.out.println("RateLimiter failure"));
+			.onSuccess(event -> System.out.println("TimeLimiter success"))
+			.onTimeout(event -> System.out.println("TimeLimiter failure"));
 		
 		return registry;
 	}
