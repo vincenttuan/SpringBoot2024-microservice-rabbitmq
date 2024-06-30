@@ -15,10 +15,11 @@ class Resilience4jProducer6060ApplicationTests {
 	
 	@Test
 	void bulkheadTest() {
-		for(int i=0;i<16;i++) {
+		for(int i=0;i<200;i++) {
 			new Thread(() -> {
 				try {
-					URL url = new URL("http://localhost:6060/employee/semaphore/1");
+					//URL url = new URL("http://localhost:6060/employee/semaphore/1");
+					URL url = new URL("http://localhost:6060/employee/threadpool/1");
 					HttpURLConnection conn = (HttpURLConnection)url.openConnection();
 					conn.setRequestMethod("GET");
 					int responseCode = conn.getResponseCode();
