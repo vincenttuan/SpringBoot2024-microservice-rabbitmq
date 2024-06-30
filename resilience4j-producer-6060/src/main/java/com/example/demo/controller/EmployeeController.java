@@ -67,7 +67,7 @@ public class EmployeeController {
 		Employee emp = new Employee();
 		emp.setEmpId(empId);
 		emp.setEmpName("Fallback");
-		emp.setDescription("Fallback Description...");
+		emp.setDescription(t.getMessage());
 		emp.setSalary(null);
 		return emp;
 	}
