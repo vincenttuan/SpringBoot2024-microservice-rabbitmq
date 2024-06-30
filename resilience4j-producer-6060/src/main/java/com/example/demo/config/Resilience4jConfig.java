@@ -7,6 +7,8 @@ import org.springframework.context.annotation.Configuration;
 
 import io.github.resilience4j.bulkhead.BulkheadConfig;
 import io.github.resilience4j.bulkhead.BulkheadRegistry;
+import io.github.resilience4j.bulkhead.ThreadPoolBulkheadConfig;
+import io.github.resilience4j.bulkhead.ThreadPoolBulkheadRegistry;
 import io.github.resilience4j.retry.RetryConfig;
 import io.github.resilience4j.retry.RetryRegistry;
 
@@ -77,6 +79,24 @@ public class Resilience4jConfig {
      * 
      * @return ThreadPoolBulkheadRegistry
      */
-	
+	@Bean
+	public ThreadPoolBulkheadRegistry threadPoolBulkheadRegistry() {
+		ThreadPoolBulkheadConfig config = ThreadPoolBulkheadConfig.custom()
+				.maxThreadPoolSize(5) // 線程池最大大小
+				.coreThreadPoolSize(5) // 核心線程池大小
+				.queueCapacity(10) // 等待佇列容量
+				.build();
+		
+		ThreadPoolBulkheadRegistry registry = ThreadPoolBulkheadRegistry.of(config);
+		
+		registry.bulkhead("employeeThreadPoolBulkhead").getEventPublisher()
+			.onCallRejected(event -> System.out.println("ThreadPoolBulkhead call rejected"))
+			.onCallPermitted(event -> System.out.println("ThreadPoolBulkhead call permitted"))
+			.onCallFinished(event -> System.out.println("ThreadPoolBulkhead call finished"));
+		
+		return registry;
+		
+		
+	}
 	
 }
