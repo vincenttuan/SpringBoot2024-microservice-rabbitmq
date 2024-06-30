@@ -14,6 +14,7 @@ import io.github.resilience4j.ratelimiter.RateLimiterConfig;
 import io.github.resilience4j.ratelimiter.RateLimiterRegistry;
 import io.github.resilience4j.retry.RetryConfig;
 import io.github.resilience4j.retry.RetryRegistry;
+import io.github.resilience4j.timelimiter.TimeLimiter;
 
 /**
  * Resilience4j 配置類，用於配置各種容錯機制如重試、限流、隔離和時間限制等。
@@ -109,7 +110,7 @@ public class Resilience4jConfig {
      * limitForPeriod: 設置每個週期內允許的最大請求數量為 10。
      * timeoutDuration: 設置請求超時時間為 500 毫秒。
      * 
-     * @return RateLimiterRegistry
+     * @return RateLimiter
      */
 	@Bean
 	public RateLimiter rateLimiter() {
@@ -128,5 +129,20 @@ public class Resilience4jConfig {
 		
 		return rateLimiter;
 	}
+	
+	/**
+     * 配置時間限制機制 (Time Limiter)
+     * 目的是限制方法執行的最大時間，防止長時間未響應的請求拖垮系統。
+     * 運作原理是設置方法執行的最大時間，超過這個時間將拋出 TimeoutException。
+     * 
+     * timeoutDuration: 設置方法執行的最大時間為 2 秒。
+     * 
+     * @return TimeLimiter
+     */
+	@Bean
+	public TimeLimiter timeLimiter() {
+		
+	}
+	
 	
 }
