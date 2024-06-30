@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import java.util.Random;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -67,6 +69,10 @@ public class EmployeeController {
 			throw new RuntimeException("無此員編");
 		} else if(empId >= 10) {
 			throw new RuntimeException("網路負荷過重連線失敗...");
+		}
+		
+		if(new Random().nextInt(100) < 50) {
+			throw new RuntimeException("資料庫存取錯誤...");
 		}
 		
 		// 模擬業務處理延遲
