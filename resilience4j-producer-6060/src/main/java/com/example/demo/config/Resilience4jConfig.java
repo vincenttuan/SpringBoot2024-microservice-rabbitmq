@@ -112,10 +112,10 @@ public class Resilience4jConfig {
      * limitForPeriod: 設置每個週期內允許的最大請求數量為 10。
      * timeoutDuration: 設置請求超時時間為 500 毫秒。
      * 
-     * @return RateLimiter
+     * @return RateLimiterRegistry
      */
 	@Bean
-	public RateLimiter rateLimiter() {
+	public RateLimiterRegistry rateLimiterRegistry() {
 		RateLimiterConfig config = RateLimiterConfig.custom()
 				.limitRefreshPeriod(Duration.ofSeconds(1))
 				.limitForPeriod(10)
@@ -129,7 +129,7 @@ public class Resilience4jConfig {
 			.onSuccess(event -> System.out.println("RateLimiter success"))
 			.onFailure(event -> System.out.println("RateLimiter failure"));
 		
-		return rateLimiter;
+		return registry;
 	}
 	
 	/**
@@ -139,10 +139,10 @@ public class Resilience4jConfig {
      * 
      * timeoutDuration: 設置方法執行的最大時間為 2 秒。
      * 
-     * @return TimeLimiter
+     * @return TimeLimiterRegistry
      */
 	@Bean
-	public TimeLimiter timeLimiter() {
+	public TimeLimiterRegistry timeLimiterRegistry() {
 		TimeLimiterConfig config = TimeLimiterConfig.custom()
 				.timeoutDuration(Duration.ofSeconds(2))
 				.build();
@@ -154,7 +154,7 @@ public class Resilience4jConfig {
 			.onSuccess(event -> System.out.println("RateLimiter success"))
 			.onTimeout(event -> System.out.println("RateLimiter failure"));
 		
-		return timeLimiter;
+		return registry;
 	}
 	
 	
