@@ -7,6 +7,12 @@
 課程目標：
 了解 Resilience4j 的基本概念和功能。
 學習如何在 Spring Boot 應用中配置和使用斷路器（Circuit Breaker）。
+參數:
+resilience4j.circuitbreaker.instances.employeeCircuitBreaker.minimumNumberOfCalls=5
+連接失敗 5 次 會開斷路
+連接成功 1 次 會半開斷路
+連接成功 5 次 會全關斷路
+
 學習如何在 Spring Boot 應用中配置和使用重試（Retry）。
 學習如何在 Spring Boot 應用中配置和使用隔離（Bulkhead），包括信號量和線程池兩種模式。
 學習如何在 Spring Boot 應用中配置和使用限流（Rate Limiter）。
