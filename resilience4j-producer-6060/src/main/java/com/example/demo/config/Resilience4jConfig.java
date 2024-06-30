@@ -1,6 +1,12 @@
 package com.example.demo.config;
 
+import java.time.Duration;
+
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import io.github.resilience4j.retry.RetryConfig;
+import io.github.resilience4j.retry.RetryRegistry;
 
 /**
  * Resilience4j 配置類，用於配置各種容錯機制如重試、限流、隔離和時間限制等。
@@ -18,6 +24,17 @@ public class Resilience4jConfig {
      * 
      * @return RetryRegistry
      */
-	
+	@Bean
+	public RetryRegistry retryRegistry() {
+		RetryConfig config = RetryConfig.custom()
+				.maxAttempts(3) // 包含初始嘗試失敗在內的次數
+				.waitDuration(Duration.ofMillis(500))
+				.build();
+		RetryRegistry registry = RetryRegistry.of(config);
+		registry.retry("employeeRetry").getEventPublisher().onRetry(event -> {
+			System.out.println("發生 employeeRetry");
+		});
+		return registry;
+	}
 	
 }
