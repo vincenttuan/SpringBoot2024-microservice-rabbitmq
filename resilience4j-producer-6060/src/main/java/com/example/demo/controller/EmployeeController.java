@@ -71,7 +71,9 @@ public class EmployeeController {
 			throw new RuntimeException("網路負荷過重連線失敗...");
 		}
 		
-		if(new Random().nextInt(100) < 50) {
+		int randonNumber = new Random().nextInt(100);
+		System.out.printf("randonNumber: %d%n", randonNumber);
+		if(randonNumber < 50) {
 			throw new RuntimeException("資料庫存取錯誤...");
 		}
 		
