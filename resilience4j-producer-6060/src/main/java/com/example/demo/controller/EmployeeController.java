@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.model.Employee;
 
+import io.github.resilience4j.bulkhead.annotation.Bulkhead;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.retry.annotation.Retry;
 
@@ -75,6 +76,27 @@ public class EmployeeController {
 		System.out.printf("randonNumber: %d%n", randonNumber);
 		if(randonNumber < 50) {
 			throw new RuntimeException("資料庫存取錯誤...");
+		}
+		
+		// 模擬業務處理延遲
+		Thread.sleep(2000);
+		
+		Employee emp = new Employee();
+		emp.setEmpId(empId);
+		emp.setEmpName("John" + empId);
+		emp.setDescription("Manager" + empId);
+		emp.setSalary(30000.0 * empId);
+		
+		return emp;
+	}
+	
+	@Bulkhead(name = "employeeBulkhead", type = Bulkhead.Type.SEMAPHORE, fallbackMethod = "getEmployeeFallback")
+	@GetMapping("/semaphore/{empId}")
+	public Employee getEmployeeSemaphore(@PathVariable Integer empId) throws InterruptedException {
+		if(empId < 1 ) {
+			throw new RuntimeException("無此員編");
+		} else if(empId >= 10) {
+			throw new RuntimeException("網路負荷過重連線失敗...");
 		}
 		
 		// 模擬業務處理延遲
