@@ -118,7 +118,14 @@ public class Resilience4jConfig {
 				.limitForPeriod(10)
 				.timeoutDuration(Duration.ofMillis(500))
 				.build();
-		return RateLimiterRegistry.of(config);
+		
+		RateLimiterRegistry registry = RateLimiterRegistry.of(config);
+		
+		registry.rateLimiter("employeeRateLimiter").getEventPublisher()
+			.onSuccess(event -> System.out.println("RateLimiter success"))
+			.onFailure(event -> System.out.println("RateLimiter failure"));
+		
+		return registry;
 	}
 	
 }
