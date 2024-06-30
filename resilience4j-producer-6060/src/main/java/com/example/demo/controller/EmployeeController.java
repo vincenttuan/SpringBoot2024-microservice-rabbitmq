@@ -160,6 +160,17 @@ public class EmployeeController {
 	// 使用線程池時，我們需要確保方法的執行和異常處理都是在線程池中進行，而不是在主線程中進行，這樣才能有效地隔離和保護主線程。
 	// 所以當使用 Bulkhead.Type.THREADPOOL 時，方法的返回值必須是 CompletableFuture，這是一種異步計算的結果。
     public CompletableFuture<Employee> getCompletableFutureEmployeeFallback(Integer empId, Throwable t) {
-		
+		return CompletableFuture.supplyAsync(() -> {
+			// 此錯誤會由全局異常處理
+			if(empId == 0) {
+				throw new RuntimeException("無此員編 0");
+			}
+			Employee emp = new Employee();
+			emp.setEmpId(empId);
+			emp.setEmpName("Fallback");
+			emp.setDescription(t.getMessage());
+			emp.setSalary(null);
+			return emp;
+		});
 	}
 }
