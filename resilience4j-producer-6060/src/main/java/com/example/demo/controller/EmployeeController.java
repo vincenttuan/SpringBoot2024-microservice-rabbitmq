@@ -154,4 +154,12 @@ public class EmployeeController {
 		emp.setSalary(null);
 		return emp;
 	}
+	
+	// 這是一個回退方法(Fallback)，當 getEmployeeThreadPool 方法發生異常時，將調用此方法
+	// Bulkhead.Type.THREADPOOL 使用線程池來限制同時執行的線程數量，以防止系統過載。
+	// 使用線程池時，我們需要確保方法的執行和異常處理都是在線程池中進行，而不是在主線程中進行，這樣才能有效地隔離和保護主線程。
+	// 所以當使用 Bulkhead.Type.THREADPOOL 時，方法的返回值必須是 CompletableFuture，這是一種異步計算的結果。
+    public CompletableFuture<Employee> getCompletableFutureEmployeeFallback(Integer empId, Throwable t) {
+		
+	}
 }
