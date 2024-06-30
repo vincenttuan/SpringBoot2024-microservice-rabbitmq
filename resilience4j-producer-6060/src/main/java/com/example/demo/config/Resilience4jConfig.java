@@ -9,6 +9,9 @@ import io.github.resilience4j.bulkhead.BulkheadConfig;
 import io.github.resilience4j.bulkhead.BulkheadRegistry;
 import io.github.resilience4j.bulkhead.ThreadPoolBulkheadConfig;
 import io.github.resilience4j.bulkhead.ThreadPoolBulkheadRegistry;
+import io.github.resilience4j.ratelimiter.RateLimiterConfig;
+import io.github.resilience4j.ratelimiter.RateLimiterRegistry;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import io.github.resilience4j.retry.RetryConfig;
 import io.github.resilience4j.retry.RetryRegistry;
 
@@ -108,6 +111,14 @@ public class Resilience4jConfig {
      * 
      * @return RateLimiterRegistry
      */
-	
+	@Bean
+	public RateLimiterRegistry rateLimiterRegistry() {
+		RateLimiterConfig config = RateLimiterConfig.custom()
+				.limitRefreshPeriod(Duration.ofSeconds(1))
+				.limitForPeriod(10)
+				.timeoutDuration(Duration.ofMillis(500))
+				.build();
+		return RateLimiterRegistry.of(config);
+	}
 	
 }
