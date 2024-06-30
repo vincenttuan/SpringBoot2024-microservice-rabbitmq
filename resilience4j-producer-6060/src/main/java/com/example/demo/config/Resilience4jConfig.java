@@ -5,6 +5,8 @@ import java.time.Duration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import io.github.resilience4j.bulkhead.BulkheadConfig;
+import io.github.resilience4j.bulkhead.BulkheadRegistry;
 import io.github.resilience4j.retry.RetryConfig;
 import io.github.resilience4j.retry.RetryRegistry;
 
@@ -47,6 +49,21 @@ public class Resilience4jConfig {
      * 
      * @return BulkheadRegistry
      */
-	
+	@Bean
+	public BulkheadRegistry bulkheadRegistry() {
+		BulkheadConfig config = BulkheadConfig.custom()
+				.maxConcurrentCalls(5)
+				.maxWaitDuration(Duration.ofSeconds(5))
+				.build();
+		
+		BulkheadRegistry register = BulkheadRegistry.of(config);
+		
+		register.bulkhead("employeeBulkhead").getEventPublisher()
+			.onCallRejected(event -> System.out.println("Bulkhead call rejected"))
+			.onCallPermitted(event -> System.out.println("Bulkhead call permitted"))
+			.onCallFinished(event -> System.out.println("Bulkhead call finished"));
+		
+		return register;
+	}
 	
 }
