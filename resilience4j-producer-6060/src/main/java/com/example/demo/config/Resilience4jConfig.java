@@ -15,6 +15,8 @@ import io.github.resilience4j.ratelimiter.RateLimiterRegistry;
 import io.github.resilience4j.retry.RetryConfig;
 import io.github.resilience4j.retry.RetryRegistry;
 import io.github.resilience4j.timelimiter.TimeLimiter;
+import io.github.resilience4j.timelimiter.TimeLimiterConfig;
+import io.github.resilience4j.timelimiter.TimeLimiterRegistry;
 
 /**
  * Resilience4j 配置類，用於配置各種容錯機制如重試、限流、隔離和時間限制等。
@@ -141,7 +143,18 @@ public class Resilience4jConfig {
      */
 	@Bean
 	public TimeLimiter timeLimiter() {
+		TimeLimiterConfig config = TimeLimiterConfig.custom()
+				.timeoutDuration(Duration.ofSeconds(2))
+				.build();
 		
+		TimeLimiterRegistry registry = TimeLimiterRegistry.of(config);
+		TimeLimiter timeLimiter = registry.timeLimiter("employeeTimeLimiter");
+		
+		timeLimiter.getEventPublisher()
+			.onSuccess(event -> System.out.println("RateLimiter success"))
+			.onTimeout(event -> System.out.println("RateLimiter failure"));
+		
+		return timeLimiter;
 	}
 	
 	
