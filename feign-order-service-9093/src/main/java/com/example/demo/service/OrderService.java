@@ -49,7 +49,6 @@ public class OrderService {
 		orderDto.setOrderDate(order.getOrderDate());
 		
 		// 透過 Feign 取得遠端客戶資料
-		
 		//Customer customer = customerClient.getCustomerById(order.getId()).getData();
 		// 更正
 		Customer customer = customerClient.getCustomerById(order.getCustomerId()).getData();
