@@ -170,25 +170,31 @@ public class EmployeeController {
 		
 	}
 	
-	@TimeLimiter(name = "employeeTimeLimiter", fallbackMethod = "getEmployeeFallback")
+	@TimeLimiter(name = "employeeTimeLimiter", fallbackMethod = "getCompletableFutureEmployeeFallback")
 	@GetMapping("/timelimiter/{empId}")
-	public Employee getEmployeeTimeLimiter(@PathVariable Integer empId) throws InterruptedException {
-		if(empId < 1 ) {
-			throw new RuntimeException("無此員編");
-		} else if(empId >= 10) {
-			throw new RuntimeException("網路負荷過重連線失敗...");
-		}
+	public CompletableFuture<Employee> getEmployeeTimeLimiter(@PathVariable Integer empId) {
+		return CompletableFuture.supplyAsync(() -> {
+			try {
+				if(empId < 1 ) {
+					throw new RuntimeException("無此員編");
+				} else if(empId >= 10) {
+					throw new RuntimeException("網路負荷過重連線失敗...");
+				}
+				
+				// 模擬業務處理延遲
+				Thread.sleep(2000);
+				
+				Employee emp = new Employee();
+				emp.setEmpId(empId);
+				emp.setEmpName("John" + empId);
+				emp.setDescription("Manager" + empId);
+				emp.setSalary(30000.0 * empId);
+				return emp;
+			} catch (InterruptedException e) {
+				throw new RuntimeException(e);
+			}
+		});
 		
-		// 模擬業務處理延遲
-		Thread.sleep(2000);
-		
-		Employee emp = new Employee();
-		emp.setEmpId(empId);
-		emp.setEmpName("John" + empId);
-		emp.setDescription("Manager" + empId);
-		emp.setSalary(30000.0 * empId);
-		
-		return emp;
 	}
 	
 	
