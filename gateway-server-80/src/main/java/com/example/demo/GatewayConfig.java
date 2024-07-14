@@ -4,6 +4,7 @@ import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 
 @Configuration
 public class GatewayConfig {
@@ -14,7 +15,9 @@ public class GatewayConfig {
         		
                 .route("feign-customer-service-9092", r -> r.path("/customers/**")
                 		// f: GatewayFilterSpec, c: CircuitBreakerConfig
-                		.filters(f -> f.circuitBreaker(c -> c.setName("customerCircuitBreaker").setFallbackUri("forward:/fallback")))
+                		.filters(f -> f.circuitBreaker(c -> c.setName("customerCircuitBreaker")
+                				.setFallbackUri("forward:/fallback"))
+                				.retry(config -> config.setRetries(2).setStatuses(HttpStatus.INTERNAL_SERVER_ERROR)))
                         .uri("lb://feign-customer-service-9092"))
                 
                 .route("feign-product-service-9091", r -> r.path("/products/**")
