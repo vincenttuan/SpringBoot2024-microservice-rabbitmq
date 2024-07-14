@@ -13,6 +13,7 @@ public class GatewayConfig {
         return builder.routes()
         		
                 .route("feign-customer-service-9092", r -> r.path("/customers/**")
+                		.filters(f -> f.circuitBreaker(c -> c.setName("customerCircuitBreaker").setFallbackUri("forward:/fallback")))
                         .uri("lb://feign-customer-service-9092"))
                 
                 .route("feign-product-service-9091", r -> r.path("/products/**")
