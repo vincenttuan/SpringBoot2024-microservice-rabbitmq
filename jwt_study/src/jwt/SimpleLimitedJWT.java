@@ -43,6 +43,7 @@ public class SimpleLimitedJWT {
 		System.out.println("token: " + token);
 		
 		// 4. 模擬讓令牌過期的情境（在這裡是等待 11 秒）。
+		System.out.println("在這裡是等待 11 秒");
 		Thread.sleep(11_000);
 		
 		// 5. 嘗試驗證令牌的簽名以及檢查它是否已過期。
