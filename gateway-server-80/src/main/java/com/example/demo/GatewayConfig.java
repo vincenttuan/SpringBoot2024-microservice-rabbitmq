@@ -11,12 +11,16 @@ public class GatewayConfig {
     @Bean
     public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
         return builder.routes()
-                .route("customer-service", r -> r.path("/customers/**")
+        		
+                .route("feign-customer-service-9092", r -> r.path("/customers/**")
                         .uri("lb://feign-customer-service-9092"))
-                .route("product-service", r -> r.path("/products/**")
+                
+                .route("feign-product-service-9091", r -> r.path("/products/**")
                         .uri("lb://feign-product-service-9091"))
-                .route("order-service", r -> r.path("/orders/**")
+                
+                .route("feign-order-service-9093", r -> r.path("/orders/**")
                         .uri("lb://feign-order-service-9093"))
+                
                 .build();
     }
 }
