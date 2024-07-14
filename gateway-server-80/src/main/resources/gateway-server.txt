@@ -1,0 +1,61 @@
+要依賴
+
+<dependency>
+	<groupId>org.springframework.cloud</groupId>
+	<artifactId>spring-cloud-starter-gateway</artifactId>
+</dependency>
+
+spring-cloud-starter-gateway:
+這是 Spring Cloud Gateway 的主要啟動器，在 Spring 5 之後它是基於 WebFlux 和非阻塞的 API。
+它提供了基於異步、事件驅動的架構的 API Gateway 功能，適用於反應式微服務架構。
+此啟動器適合於需要高吞吐量和低延遲的應用場景。
+---------------------------------------------------------------------------------
+
++------------+     +--------------+     +---------------+
+|            |     |              |     |               |
+|  Gateway   +---->+    Eureka    +---->+    Orders     |
+|            |     |    Server    |     |    Service    |
++------------+     +--------------+     +---------------+
+                           ^         ^
+                           |         |_________
+                   +-------+------+     +------+--------+
+                   |              |     |               |
+                   |  Customers   |     |   Products    |
+                   |   Service    |     |    Service    |
+                   +--------------+     +---------------+
+
+---------------------------------------------------------------------------------
+可以使用 xml 配置或 java 配置
+
+# Gateway Routes Configuration
+# Customer Service Route
+spring.cloud.gateway.routes[0].id=customer-service
+spring.cloud.gateway.routes[0].uri=lb://customer-service
+spring.cloud.gateway.routes[0].predicates[0]=Path=/customers/**
+
+# Product Service Route
+spring.cloud.gateway.routes[1].id=product-service
+spring.cloud.gateway.routes[1].uri=lb://product-service
+spring.cloud.gateway.routes[1].predicates[0]=Path=/products/**
+
+# Order Service Route
+spring.cloud.gateway.routes[2].id=order-service
+spring.cloud.gateway.routes[2].uri=lb://order-service
+spring.cloud.gateway.routes[2].predicates[0]=Path=/orders/**
+
+---------------------------------------------------------------------------------
+@Configuration
+public class GatewayConfig {
+
+    @Bean
+    public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
+        return builder.routes()
+                .route("customer-service", r -> r.path("/customers/**")
+                        .uri("lb://customer-service"))
+                .route("product-service", r -> r.path("/products/**")
+                        .uri("lb://product-service"))
+                .route("order-service", r -> r.path("/orders/**")
+                        .uri("lb://order-service"))
+                .build();
+    }
+}
