@@ -31,7 +31,7 @@ public class SimpleJWTJWE {
 		// 3. 使用 JWS 來對 JWT 進行簽名
 		SignedJWT signedJWT = KeyUtil.signWithSecret(claimsSet, signingSecret); 
 		
-		// 4. 使用 JWE 來加密 JWT
+		// 4. 使用 JWE 來對 JWT 進行資料加密
 		String encryptedJWT = KeyUtil.encryptJWT(signedJWT, encryptionSecret);
 		
 		// 輸出 JWT token
