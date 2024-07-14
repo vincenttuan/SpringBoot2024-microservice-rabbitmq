@@ -11,6 +11,8 @@ public class SimpleJWT {
 	public static void main(String[] args) throws Exception {
 		// 1. 生成簽名密鑰 (JWK)
 		String signingSecret = KeyUtil.generateSecret(32);
+		System.out.println("簽名密鑰:");
+		System.out.println(signingSecret);
 		
 		// 2. 創建 JWT 的聲明 (chaims/payload)
 		JWTClaimsSet claimsSet = new JWTClaimsSet.Builder()
