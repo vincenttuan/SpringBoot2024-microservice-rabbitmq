@@ -32,7 +32,18 @@ public class SimpleJWT {
 		System.out.println(token);
 		
 		// 4. 驗證 Token 簽名
-		
+		if(KeyUtil.verifyJWTSignature(token, signingSecret)) {
+			System.out.println("Token 簽名驗證成功");
+			// 將 claims/payload DATA 取出
+			JWTClaimsSet claims = KeyUtil.getClaimsFromToken(token);
+			System.out.printf("主題 subject: %s%n", claims.getSubject());
+			System.out.printf("發行 issuer: %s%n", claims.getIssuer());
+			System.out.printf("自訂-使用者姓名 name: %s%n", claims.getStringClaim("name"));
+			System.out.printf("自訂-使用者生日 birth: %s%n", claims.getStringClaim("birth"));
+			System.out.printf("自訂-開燈 light: %s%n", claims.getStringClaim("light"));
+		} else {
+			System.out.println("Token 簽名驗證失敗");
+		}
 		
 	}
 }
