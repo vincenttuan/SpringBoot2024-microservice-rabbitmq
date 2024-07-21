@@ -16,5 +16,16 @@ package jwt;
  * 6. 模擬「房間卡產生器」過期後的情況。
  */
 public class HotelKeySystem {
-
+	
+	private static String masterKey; // 金鑰
+	
+	public static void main(String[] args) {
+		 // 1. 生成主要的機密鑰匙 (masterKey)。
+		 // 2. 創建並簽署「房間卡產生器」(Refresh Token)。
+		 // 3. 創建並簽署「房間卡」(Access Token)。
+		 // 4. 驗證「房間卡」是否過期。
+		 // 5. 若「房間卡」過期，使用「房間卡產生器」重新簽署新的「房間卡」。
+		 // 6. 模擬「房間卡產生器」過期後的情況。
+	}
+	
 }
