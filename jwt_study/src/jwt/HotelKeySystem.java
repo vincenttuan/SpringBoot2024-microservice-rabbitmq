@@ -38,6 +38,18 @@ public class HotelKeySystem {
 		return signedRoomCardGenerator;
 	}
 	
+	// 創建並簽署「房間卡」(Access Token)方法
+	private static String createRoomCard(String guest, String roomNo) throws JOSEException {
+		JWTClaimsSet roomCardGenerator = new JWTClaimsSet.Builder()
+				.subject(guest) // 房客的身分
+				.issuer("https://hotel.com") // 飯店發行單位
+				.claim("roomNo", roomNo) // 自訂資訊: 房號
+				.expirationTime(new Date(new Date().getTime() + 5_000)) // 設定房卡的有效時間: 5秒
+				.build(); // 建立房卡
+		String signedRoomCard = KeyUtil.signJWT(roomCardGenerator, masterKey); // 將房卡簽名
+		return signedRoomCard;
+	}
+	
 	public static void main(String[] args) throws JOSEException {
 		// 1. 生成主要的機密鑰匙 (masterKey)。
 		masterKey = KeyUtil.generateSecret(32); // 32 bytes 的密鑰長度
@@ -46,7 +58,10 @@ public class HotelKeySystem {
 		// 2. 創建並簽署「房間卡產生器」(Refresh Token)。
 		String signedRoomCardGenerator = createRoomCardGenerator();
 		System.out.printf("房間卡產生器(Refresh Token):%s%n", signedRoomCardGenerator);
+		
 		// 3. 創建並簽署「房間卡」(Access Token)。
+		String signedRoomCard = createRoomCard();
+		
 		// 4. 驗證「房間卡」是否過期。
 		// 5. 若「房間卡」過期，使用「房間卡產生器」重新簽署新的「房間卡」。
 		// 6. 模擬「房間卡產生器」過期後的情況。
