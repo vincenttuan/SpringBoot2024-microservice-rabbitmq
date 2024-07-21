@@ -24,6 +24,8 @@ public class JWTController {
 	
 	private static Map<String, String> tokens = new ConcurrentHashMap<>();
 	
+	private static Map<String, String> users = Map.of("john", "1234", "mary", "5678", "admin", "1111");
+	
 	// 申請一個訪客 jwt
 	@GetMapping("/guestJWT")
 	public ResponseEntity<String> getGuestJWT() throws JOSEException {
