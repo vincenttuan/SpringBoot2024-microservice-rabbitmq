@@ -31,6 +31,7 @@ public class SimpleRevocationJWT {
 				.subject("john") // 房客的身分
 				.issuer("https://hotel.com") // 飯店發行單位
 				.claim("roomNo", "101") // 自訂資訊: 房號
+				//.claim("role", "管理者")
 				.build(); // 建立房卡
 		String signedRoomCard = KeyUtil.signJWT(roomCardGenerator, masterKey); // 將房卡簽名
 		System.out.printf("房卡:%s%n", signedRoomCard);
