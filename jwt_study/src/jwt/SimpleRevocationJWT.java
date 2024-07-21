@@ -1,5 +1,14 @@
 package jwt;
 
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
+import com.nimbusds.jose.JOSEException;
+import com.nimbusds.jwt.JWTClaimsSet;
+
+import util.KeyUtil;
+
 /**
  * SimpleRevocationJWT 示範了 JWT 的撤銷機制。
  * 
@@ -12,10 +21,37 @@ package jwt;
  * 3. 驗證 JWT，並檢查其是否已被撤銷。
  */
 public class SimpleRevocationJWT {
-
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+	
+	// 儲存已撤銷的 JWT 黑名單
+	private static Set<String> revokedTokens = new HashSet<>();
+	
+	public static void main(String[] args) throws JOSEException {
+		String masterKey = KeyUtil.generateSecret(32); // 32 bytes 的密鑰長度
+		JWTClaimsSet roomCardGenerator = new JWTClaimsSet.Builder()
+				.subject("john") // 房客的身分
+				.issuer("https://hotel.com") // 飯店發行單位
+				.claim("roomNo", "101") // 自訂資訊: 房號
+				.build(); // 建立房卡
+		String signedRoomCard = KeyUtil.signJWT(roomCardGenerator, masterKey); // 將房卡簽名
+		System.out.printf("房卡:%s%n", signedRoomCard);
+		System.out.printf("房卡有效:%b%n", KeyUtil.verifyJWTSignature(signedRoomCard, masterKey));
+		
+		// 模擬 JWT 撤銷
+		revokedTokens.add(signedRoomCard); // 將要撤銷的房卡放到黑名單集合中
+		
+		// 驗證 JWT 是否在黑名單中?
+		if(KeyUtil.verifyJWTSignature(signedRoomCard, masterKey)) { // 驗證 JWT 是否有效
+			// 驗證是否在黑名單中
+			if(revokedTokens.contains(signedRoomCard)) {
+				System.out.printf("房卡已在黑名單中:%s%n", signedRoomCard);
+				System.out.println("房卡不可以使用...");
+			} else {
+				System.out.printf("房卡未在黑名單中:%s%n", signedRoomCard);
+				System.out.println("房卡可以使用...");
+			}
+		} else {
+			System.out.println("房卡失效或簽名驗證失敗");
+		}
 	}
 
 }
