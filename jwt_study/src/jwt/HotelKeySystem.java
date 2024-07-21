@@ -60,7 +60,8 @@ public class HotelKeySystem {
 		System.out.printf("房間卡產生器(Refresh Token):%s%n", signedRoomCardGenerator);
 		
 		// 3. 創建並簽署「房間卡」(Access Token)。
-		String signedRoomCard = createRoomCard();
+		String signedRoomCard = createRoomCard("John", "101");
+		System.out.printf("房間卡(Access Token):%s%n", signedRoomCard);
 		
 		// 4. 驗證「房間卡」是否過期。
 		// 5. 若「房間卡」過期，使用「房間卡產生器」重新簽署新的「房間卡」。
