@@ -42,7 +42,16 @@ public class JWTController {
 			@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader) throws JOSEException {
 		
 		System.out.println(authorizationHeader);
-		
+		// 解碼 authorizationHeader
+		String base64Credentials = authorizationHeader.substring("Basic ".length());
+        byte[] decodedBytes = java.util.Base64.getDecoder().decode(base64Credentials);
+        String decodedCredentials = new String(decodedBytes);
+        String[] credentials = decodedCredentials.split(":", 2);
+        String username = credentials[0];
+        String password = credentials[1];
+        System.out.println("username: " + username);
+        System.out.println("password: " + password);
+        
 		String userJWT = jwtServiceNimbus.createToken(serviceId, "john", 600_000);
 		
 		return ResponseEntity.ok(userJWT);
