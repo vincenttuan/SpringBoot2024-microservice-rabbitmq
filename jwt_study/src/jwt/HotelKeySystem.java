@@ -87,7 +87,7 @@ public class HotelKeySystem {
 		
 		// 檢查房間卡產生器是否過期
 		if(!KeyUtil.verifyJWTSignature(signedRoomCardGenerator, masterKey)) {
-			System.out.printf("房間卡產生器已過期");
+			System.out.println("房間卡產生器已過期");
 			signedRoomCardGenerator = createRoomCardGenerator(); // 重發房間卡產生器
 			System.out.printf("重發房間卡產生器(Refresh Token):%s%n", signedRoomCardGenerator);
 			boolean isRoomCardGeneratorNonExpired = KeyUtil.verifyJWTSignature(signedRoomCardGenerator, masterKey);
