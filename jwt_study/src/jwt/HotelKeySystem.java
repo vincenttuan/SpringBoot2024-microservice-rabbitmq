@@ -77,6 +77,11 @@ public class HotelKeySystem {
 		}
 		
 		// 5. 若「房間卡」過期，使用「房間卡產生器」重新簽署新的「房間卡」。
+		signedRoomCard = createRoomCard("john", "101");
+		System.out.printf("重發房間卡(Access Token):%s%n", signedRoomCard);
+		boolean isRoomCardExpired = !KeyUtil.verifyJWTSignature(signedRoomCard, masterKey);
+		System.out.printf("重發的房間卡是否有效: %b%n", !isRoomCardExpired);
+		
 		// 6. 模擬「房間卡產生器」過期後的情況。
 	}
 	
