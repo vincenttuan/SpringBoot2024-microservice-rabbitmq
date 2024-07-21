@@ -21,7 +21,7 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 @Service
-public class JwtServiceNimbus {
+public class JWTServiceNimbus {
     private static final String KEY_FILE = "secret.key"; // 密鑰檔案名稱
     private static byte[] SECRET_KEY; // 密鑰
 
