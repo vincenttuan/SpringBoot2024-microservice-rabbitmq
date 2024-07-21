@@ -52,6 +52,9 @@ public class JWTController {
         System.out.println("username: " + username);
         System.out.println("password: " + password);
         
+        // 進行 username 與 password 的比對
+        // 略 ...
+        
 		String userJWT = jwtServiceNimbus.createToken(serviceId, username, 600_000);
 		
 		return ResponseEntity.ok(userJWT);
