@@ -67,7 +67,7 @@ public class HotelKeySystem {
 		while (true) {
 			// 用房間卡開門, 判斷房間卡是否失效
 			boolean isRoomCardExpired = !KeyUtil.verifyJWTSignature(signedRoomCard, masterKey);
-			System.out.printf("用房間卡開門: %b%n", isRoomCardExpired);
+			System.out.printf("用房間卡開門, 房間卡是否失效: %b%n", isRoomCardExpired);
 			if(isRoomCardExpired) {
 				System.out.println("房卡無效請到前台重新辦理");
 				break;
