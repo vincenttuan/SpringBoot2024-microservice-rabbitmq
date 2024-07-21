@@ -62,8 +62,11 @@ public class JWTController {
         }
         
         // 先判斷該使用者使否已經申請過 ?
-        String storedJwt = tokens.get("username");
+        String storedJwt = tokens.get(username);
         if(storedJwt != null) {
+        	// 驗證該 storedJwt 是否已經過期 ?
+        	// 若已過期則重發
+        	//storedJwt = jwtServiceNimbus.createToken(serviceId, username, 600_000);
         	return ResponseEntity.ok(storedJwt);
         }
         
