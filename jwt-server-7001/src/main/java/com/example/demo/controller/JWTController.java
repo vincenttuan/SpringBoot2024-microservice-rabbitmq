@@ -5,6 +5,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.http.HttpHeaders;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -57,7 +58,7 @@ public class JWTController {
         // 進行 username 與 password 的比對
         boolean loginCheck = users.containsKey(username) && users.get(username).equals(password); 
         if(!loginCheck) {
-        	return ResponseEntity.ok("login error");
+        	return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
         
 		String userJWT = jwtServiceNimbus.createToken(serviceId, username, 600_000);
