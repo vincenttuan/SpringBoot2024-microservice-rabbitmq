@@ -1,9 +1,14 @@
 package com.example.demo.controller;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+import org.apache.http.HttpHeaders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.service.JWTServiceNimbus;
@@ -17,10 +22,30 @@ public class JWTController {
 	@Autowired
 	private JWTServiceNimbus jwtServiceNimbus;
 	
+	private static Map<String, String> tokens = new ConcurrentHashMap<>();
+	
+	// 申請一個訪客 jwt
 	@GetMapping("/guestJWT")
 	public ResponseEntity<String> getGuestJWT() throws JOSEException {
 		String guestJWT = jwtServiceNimbus.createToken("guest", "user", 600_000);
 		return ResponseEntity.ok(guestJWT);
+	}
+	
+	// 申請一個正式 jwt
+	// Header: User-Agent: 使用者名字
+	//         Service-Identifier: 服務 id
+	//         Authorization: Basic 使用者帳密
+	@GetMapping("/jwt")
+	public ResponseEntity<String> getJWT(
+			@RequestHeader("User-Agent") String userAgent,
+			@RequestHeader("Service-Identifier") String serviceId,
+			@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader) throws JOSEException {
+		
+		System.out.println(authorizationHeader);
+		
+		String userJWT = jwtServiceNimbus.createToken(serviceId, "john", 600_000);
+		
+		return ResponseEntity.ok(userJWT);
 	}
 	
 }
