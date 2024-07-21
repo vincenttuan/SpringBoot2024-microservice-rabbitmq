@@ -32,8 +32,8 @@ public class JWTController {
 	}
 	
 	// 申請一個正式 jwt
-	// Header: User-Agent: 使用者名字
-	//         Service-Identifier: 服務 id
+	// Header: User-Agent: 使用者名字(Ex:john)
+	//         Service-Identifier: 服務 id(Ex:report)
 	//         Authorization: Basic 使用者帳密
 	@GetMapping("/jwt")
 	public ResponseEntity<String> getJWT(
