@@ -41,6 +41,7 @@ public class HotelKeySystem {
 	public static void main(String[] args) throws JOSEException {
 		// 1. 生成主要的機密鑰匙 (masterKey)。
 		masterKey = KeyUtil.generateSecret(32); // 32 bytes 的密鑰長度
+		System.out.printf("機密鑰匙:%s%n", masterKey);
 		
 		// 2. 創建並簽署「房間卡產生器」(Refresh Token)。
 		String signedRoomCardGenerator = createRoomCardGenerator();
