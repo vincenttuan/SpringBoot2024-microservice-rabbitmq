@@ -50,7 +50,7 @@ public class HotelKeySystem {
 		return signedRoomCard;
 	}
 	
-	public static void main(String[] args) throws JOSEException {
+	public static void main(String[] args) throws JOSEException, InterruptedException {
 		// 1. 生成主要的機密鑰匙 (masterKey)。
 		masterKey = KeyUtil.generateSecret(32); // 32 bytes 的密鑰長度
 		System.out.printf("機密鑰匙:%s%n", masterKey);
@@ -64,6 +64,18 @@ public class HotelKeySystem {
 		System.out.printf("房間卡(Access Token):%s%n", signedRoomCard);
 		
 		// 4. 驗證「房間卡」是否過期。
+		while (true) {
+			// 用房間卡開門, 判斷房間卡是否失效
+			boolean isRoomCardExpired = !KeyUtil.verifyJWTSignature(signedRoomCard, masterKey);
+			System.out.printf("用房間卡開門: %b%n", isRoomCardExpired);
+			if(isRoomCardExpired) {
+				System.out.println("房卡無效請到前台重新辦理");
+				break;
+			}
+			System.out.println("房卡有效開門進入");
+			Thread.sleep(1000);
+		}
+		
 		// 5. 若「房間卡」過期，使用「房間卡產生器」重新簽署新的「房間卡」。
 		// 6. 模擬「房間卡產生器」過期後的情況。
 	}
