@@ -61,8 +61,19 @@ public class JWTController {
         	return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
         
+        // 先判斷該使用者使否已經申請過 ?
+        String storedJwt = tokens.get("username");
+        if(storedJwt != null) {
+        	return ResponseEntity.ok(storedJwt);
+        }
+        
+        // 新建一個 token
 		String userJWT = jwtServiceNimbus.createToken(serviceId, username, 600_000);
+		// 加入到 tokens
+		tokens.put(username, userJWT);
 		return ResponseEntity.ok(userJWT);
 	}
+	
+	
 	
 }
