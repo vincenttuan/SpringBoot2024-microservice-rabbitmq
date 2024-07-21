@@ -1,5 +1,7 @@
 package jwt;
 
+import util.KeyUtil;
+
 /**
  * HotelKeySystem 模擬一家酒店的房卡管理系統。
  * 在這個情境中，當房客入住酒店時，他們會得到一張「房間卡」，這張卡具有短暫的時效性，使他們能夠在有限的時間內進入房間。
@@ -20,12 +22,14 @@ public class HotelKeySystem {
 	private static String masterKey; // 金鑰
 	
 	public static void main(String[] args) {
-		 // 1. 生成主要的機密鑰匙 (masterKey)。
-		 // 2. 創建並簽署「房間卡產生器」(Refresh Token)。
-		 // 3. 創建並簽署「房間卡」(Access Token)。
-		 // 4. 驗證「房間卡」是否過期。
-		 // 5. 若「房間卡」過期，使用「房間卡產生器」重新簽署新的「房間卡」。
-		 // 6. 模擬「房間卡產生器」過期後的情況。
+		// 1. 生成主要的機密鑰匙 (masterKey)。
+		masterKey = KeyUtil.generateSecret(32); // 32 bytes 的密鑰長度
+		
+		// 2. 創建並簽署「房間卡產生器」(Refresh Token)。
+		// 3. 創建並簽署「房間卡」(Access Token)。
+		// 4. 驗證「房間卡」是否過期。
+		// 5. 若「房間卡」過期，使用「房間卡產生器」重新簽署新的「房間卡」。
+		// 6. 模擬「房間卡產生器」過期後的情況。
 	}
 	
 }
