@@ -52,7 +52,7 @@ public class JWTController {
         System.out.println("username: " + username);
         System.out.println("password: " + password);
         
-		String userJWT = jwtServiceNimbus.createToken(serviceId, "john", 600_000);
+		String userJWT = jwtServiceNimbus.createToken(serviceId, username, 600_000);
 		
 		return ResponseEntity.ok(userJWT);
 	}
