@@ -6,17 +6,21 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.annotation.RequestScope;
 
+import ch.qos.logback.core.subst.Token;
 import feign.RequestInterceptor;
 
 @Configuration
 public class FeignClientConfig {
 	
+	@Autowired
+	private FeignClientConfig.TokenHolder tokenHolder;
+	
 	// 定義一個請求攔截器
 	@Bean
 	public RequestInterceptor requestInterceptor() {
 		return requestTemplate -> {
-			// 取得 token
-			String token = "";
+			// 從 tokenHolder 中取得 token
+			String token = tokenHolder.getJwtToken();
 			// 將 token 添加到 requestTemplate 的 header 中
 			requestTemplate.header("Authorization", "Bearer " + token);
 		};
