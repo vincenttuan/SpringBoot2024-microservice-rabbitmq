@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.context.annotation.RequestScope;
 
 import feign.RequestInterceptor;
 
@@ -20,5 +21,26 @@ public class FeignClientConfig {
 			requestTemplate.header("Authorization", "Bearer " + token);
 		};
 	}
+	
+	@Bean
+	@RequestScope
+	public TokenHolder tokenHolder() {
+		return new TokenHolder();
+	}
+	
+	// 定義一個 Token 的 Holder
+	public static class TokenHolder {
+		private String jwtToken;
+
+		public String getJwtToken() {
+			return jwtToken;
+		}
+
+		public void setJwtToken(String jwtToken) {
+			this.jwtToken = jwtToken;
+		}
+		
+	}
+	
 	
 }
