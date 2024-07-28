@@ -132,6 +132,21 @@ public class JWTController {
 		return ResponseEntity.ok(username + " 的 token 已被清除");
 	}
 	
+	/**
+     * 驗證 JWT 的有效性。
+     * 可以通過兩種方式提供 token：
+     * 1. 作為請求參數提供，如：/verifyJwt?token=your_jwt_token
+     * 2. 作為 HTTP Header 提供，Header 名稱為 Authorization，格式為：Bearer your_jwt_token
+     * 如果兩者都未提供，則返回 400 Bad Request 狀態碼和錯誤消息。
+     *
+     * @param token               可選的請求參數中的 JWT
+     * @param authorizationHeader 可選的 HTTP Header 中的 JWT
+     * @param request             HttpServletRequest 對象，用於獲取請求的 IP 和端口
+     * @return 返回 JWT 的驗證結果
+     */
+	
+	
+	
 	
 	
 }
