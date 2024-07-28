@@ -27,17 +27,28 @@ public class JWTController {
 	
 	private static Map<String, String> users = Map.of("john", "1234", "mary", "5678", "admin", "1111");
 	
-	// 申請一個訪客 jwt
+	/**
+     * 申請一個訪客 JWT
+     * @return ResponseEntity 包含訪客 JWT 的字串
+     * @throws JOSEException 當 JWT 創建失敗時拋出
+     */
 	@GetMapping("/guestJWT")
 	public ResponseEntity<String> getGuestJWT() throws JOSEException {
 		String guestJWT = jwtServiceNimbus.createToken("guest", "user", 600_000);
 		return ResponseEntity.ok(guestJWT);
 	}
 	
-	// 申請一個正式 jwt
-	// Header: User-Agent: 使用者名字(Ex:john)
-	//         Service-Identifier: 服務 id(Ex:report)
-	//         Authorization: Basic 使用者帳密
+	/**
+     * 申請一個正式 JWT
+     * Header: User-Agent: 使用者名字 (Ex: john)
+     *         Service-Identifier: 服務 ID (Ex: report)
+     *         Authorization: Basic 使用者帳密
+     * @param userAgent 使用者名字
+     * @param serviceId 服務 ID
+     * @param authorizationHeader Basic 認證的 Header
+     * @return ResponseEntity 包含正式 JWT 的字串
+     * @throws JOSEException 當 JWT 創建失敗時拋出
+     */
 	@GetMapping("/jwt")
 	public ResponseEntity<String> getJWT(
 			@RequestHeader("User-Agent") String userAgent,
