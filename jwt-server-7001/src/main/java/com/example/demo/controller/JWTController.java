@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.service.JWTServiceNimbus;
 import com.nimbusds.jose.JOSEException;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 //Access-Control-Allow-Origin
 @CrossOrigin
 @RestController
@@ -97,8 +99,8 @@ public class JWTController {
      * 如果成功清除，返回 200 OK 和消息。
      * 如果未找到用戶名相關聯的 token，返回 401 Unauthorized。
      *
-     * @param token               可選的請求參數中的 JWT
-     * @param authorizationHeader 可選的 HTTP Header 中的 JWT
+     * @param token      可選的請求參數中的 JWT
+     * @param authHeader 可選的 HTTP Header 中的 JWT
      * @return 返回清除結果的消息或 401 Unauthorized 狀態
      */
 	@GetMapping("/clear")
@@ -139,12 +141,55 @@ public class JWTController {
      * 2. 作為 HTTP Header 提供，Header 名稱為 Authorization，格式為：Bearer your_jwt_token
      * 如果兩者都未提供，則返回 400 Bad Request 狀態碼和錯誤消息。
      *
-     * @param token               可選的請求參數中的 JWT
-     * @param authorizationHeader 可選的 HTTP Header 中的 JWT
-     * @param request             HttpServletRequest 對象，用於獲取請求的 IP 和端口
+     * @param token      可選的請求參數中的 JWT
+     * @param authHeader 可選的 HTTP Header 中的 JWT
+     * @param request    HttpServletRequest 對象，用於獲取請求的 IP 和端口
      * @return 返回 JWT 的驗證結果
      */
-	
+	@GetMapping("/verifyJwt")
+	public ResponseEntity<String> verifyJwt(
+			@RequestParam(required = false) String token,
+			@RequestHeader(value = HttpHeaders.AUTHORIZATION, required = false) String authHeader,
+			HttpServletRequest request) {
+		
+		// 如果請求參數中未提供 token, 則嘗試從 Header 中獲取
+		if(token == null || token.isEmpty()) {
+			// 檢查 Authorization Header 是否存在且以 "Bearer " 開頭
+			if(authHeader != null && authHeader.startsWith("Bearer ")) {
+				// 移除 "Bearer " 前綴, 來得到真正的 token 字串
+				token = authHeader.substring("Bearer ".length());
+			}
+		}
+		
+		// 如果二者都未提供, 返回 400
+		if(token == null || token.isEmpty()) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("缺少 Token");
+		}
+		
+		// 來自 ip
+		String ip = request.getRemoteAddr();
+		int port = request.getRemotePort();
+		System.out.println("來自: " + ip + ":" + port + " 的請求");
+		
+		// 驗證 JWT 是否有效
+		System.out.println("驗證 token: " + token);
+		if(!jwtServiceNimbus.verifyToken(token)) {
+			System.out.println("驗證 token 失敗, JWT 是無效的: " + token);
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("JWT 是無效的");
+		}
+		
+		// 取得用戶
+		String username = jwtServiceNimbus.getJWTClaims(token).get("username").toString();
+		
+		// 檢查用戶名稱是否存在於 tokens map 中
+		if(!tokens.containsKey(username)) {
+			System.out.println("JWT 是有效的. 但是用戶名不存在於 tokens map 中");
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("JWT 是有效的. 但是用戶名不存在於 tokens map 中");
+		}
+		
+		System.out.println("JWT 是有效的");
+		return ResponseEntity.ok("JWT 是有效的");
+	}
 	
 	
 	
