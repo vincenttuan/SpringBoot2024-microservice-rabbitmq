@@ -191,7 +191,4 @@ public class JWTController {
 		return ResponseEntity.ok("JWT 是有效的");
 	}
 	
-	
-	
-	
 }
