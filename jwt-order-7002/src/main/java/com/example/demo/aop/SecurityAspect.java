@@ -13,6 +13,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.example.demo.config.FeignClientConfig;
+import com.example.demo.config.TokenConfig;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -25,7 +26,7 @@ public class SecurityAspect {
 	
 	// 利用 tokenHolder 將 token 存起來
 	@Autowired
-	private FeignClientConfig.TokenHolder tokenHolder;
+	private TokenConfig.TokenHolder tokenHolder;
 	
 	@Pointcut("execution(* com.example.demo.controller.*.*(..)) && @annotation(org.springframework.web.bind.annotation.GetMapping)")
     public void authMethods() {
