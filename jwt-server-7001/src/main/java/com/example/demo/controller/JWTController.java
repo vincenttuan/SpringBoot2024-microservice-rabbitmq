@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.service.JWTServiceNimbus;
@@ -81,11 +82,54 @@ public class JWTController {
         	return ResponseEntity.ok(storedJwt);
         }
         
-        // 新建一個 token
+        // 新建一個 token(有效期 600 秒)
 		String userJWT = jwtServiceNimbus.createToken(serviceId, username, 600_000);
 		// 加入到 tokens
 		tokens.put(username, userJWT);
 		return ResponseEntity.ok(userJWT);
+	}
+	
+	/**
+     * 清除與指定用戶名相關聯的 token。
+     * <p>
+     * 此方法接受作為請求參數提供的 JWT token，或從 Authorization Header 中獲取 JWT token，
+     * 解析出其中的用戶名，並從 tokens Map 中移除該用戶名相關聯的 token。
+     * 如果成功清除，返回 200 OK 和消息。
+     * 如果未找到用戶名相關聯的 token，返回 401 Unauthorized。
+     *
+     * @param token               可選的請求參數中的 JWT
+     * @param authorizationHeader 可選的 HTTP Header 中的 JWT
+     * @return 返回清除結果的消息或 401 Unauthorized 狀態
+     */
+	@GetMapping("/clear")
+	public ResponseEntity<String> clear(
+			@RequestParam(required = false) String token,
+			@RequestHeader(value = HttpHeaders.AUTHORIZATION, required = false) String authHeader) {
+		
+		// 如果請求參數中未提供 token, 則嘗試從 Header 中獲取
+		if(token == null || token.isEmpty()) {
+			// 檢查 Authorization Header 是否存在且以 "Bearer " 開頭
+			if(authHeader != null && authHeader.startsWith("Bearer ")) {
+				// 移除 "Bearer " 前綴, 來得到真正的 token 字串
+				token = authHeader.substring("Bearer ".length());
+			}
+		}
+		
+		// 如果二者都未提供, 返回 400
+		if(token == null || token.isEmpty()) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("缺少 Token");
+		}
+		
+		// 從 JWT 中提取用戶名
+		String username = jwtServiceNimbus.getJWTClaims(token).get("username").toString();
+		System.out.println("清除 tokens 中的 " + username);
+		
+		// 從 tokens Map 中移除與用戶名稱相關聯的 token
+		if(tokens.remove(username) == null) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(username + " 的 token 找不到");
+		}
+		
+		return ResponseEntity.ok(username + " 的 token 已被清除");
 	}
 	
 	
