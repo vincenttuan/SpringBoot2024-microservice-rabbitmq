@@ -12,6 +12,8 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import com.example.demo.config.FeignClientConfig;
+
 import jakarta.servlet.http.HttpServletRequest;
 
 @Component
@@ -20,6 +22,10 @@ public class SecurityAspect {
 	
 	@Autowired
 	private RestTemplate restTemplate;
+	
+	// 利用 tokenHolder 將 token 存起來
+	@Autowired
+	private FeignClientConfig.TokenHolder tokenHolder;
 	
 	@Pointcut("execution(* com.example.demo.controller.*.*(..)) && @annotation(org.springframework.web.bind.annotation.GetMapping)")
     public void authMethods() {
@@ -42,6 +48,8 @@ public class SecurityAspect {
 		// 驗證 token
 		if(response.getStatusCode().is2xxSuccessful()) {
 			System.out.println("Token 驗證成功");
+			// 將 token 存入, 以便給 requestTemplate / restTemplate / Feign 使用
+			tokenHolder.setJwtToken(token);
 		} else {
 			System.out.println("Token 驗證失敗");
 			throw new SecurityException("Token 驗證失敗");
