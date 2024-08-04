@@ -20,7 +20,7 @@ public class NewsPublisher {
 	// 發送新聞到 FanoutExchange
 	public void publishNews(String news) {
 		String routingKey = ""; // FanoutExchange 因為是廣播所以不需要設定路由鍵
-		rabbitTemplate.convertAndSend("new.fanout", routingKey, news);
+		rabbitTemplate.convertAndSend("news.fanout", routingKey, news);
 	}
 	
 }
