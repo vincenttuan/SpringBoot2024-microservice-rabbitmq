@@ -1,6 +1,6 @@
 package com.example.demo.publish_subscribe;
 
-/**
+/******************************************************
 							 news.website				
 	                          +-------+
 	       news.fanout     +--| Queue | -> C1 網站接收新聞
@@ -15,7 +15,7 @@ P發新聞 -> |  Exchange   |---+
  * FanoutExchange: 用於將消息廣播到所有綁定的隊列。
  * Queue: 用於緩存消息，等待消費者消費。
  * Binding: 將隊列綁定到交換機的配置。
-*/
+*******************************************************/
 public class RabbitMQConfig {
-
+	
 }
