@@ -5,6 +5,7 @@ import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.FanoutExchange;
 import org.springframework.amqp.core.Queue;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 
 /******************************************************
@@ -24,6 +25,7 @@ P發新聞 -> |  Exchange   |---+
  * Binding: 將隊列綁定到交換機的配置。
 *******************************************************/
 // RabbitMQ 設定類，用於配置交換機和隊列。
+@Configuration
 public class RabbitMQConfig {
 	
 	// FanoutExchange: 用於將消息廣播到所有綁定的隊列。
