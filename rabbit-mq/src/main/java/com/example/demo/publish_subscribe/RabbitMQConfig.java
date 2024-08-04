@@ -1,5 +1,7 @@
 package com.example.demo.publish_subscribe;
 
+import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.FanoutExchange;
 import org.springframework.amqp.core.Queue;
 import org.springframework.context.annotation.Bean;
@@ -41,7 +43,16 @@ public class RabbitMQConfig {
 		return new Queue("news.app");
 	}
 	
+	// Binding: 將隊列綁定到交換機的配置。
+	@Bean
+	public Binding bindingWebsite(FanoutExchange fanoutExchange, Queue websiteQueue) {
+		return BindingBuilder.bind(websiteQueue).to(fanoutExchange);
+	}
 	
+	@Bean
+	public Binding bindingApp(FanoutExchange fanoutExchange, Queue appQueue) {
+		return BindingBuilder.bind(appQueue).to(fanoutExchange);
+	}
 	
 	
 }
