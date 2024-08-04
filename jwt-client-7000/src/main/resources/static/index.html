@@ -14,6 +14,10 @@
     <p></p>
     <button id="fetchOrderButton">Fetch Order</button>
     <button id="fetchProductButton">Fetch Product</button>
-    <script src="./js/token.js"></script> 
+    <script>
+		const timestamp = new Date().getTime();
+		document.write(`<script src="./js/token.js?${timestamp}"><\/script>`);
+	</script>
+     
 </body>
 </html>
