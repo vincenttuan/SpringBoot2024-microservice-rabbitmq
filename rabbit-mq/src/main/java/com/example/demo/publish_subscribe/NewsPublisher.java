@@ -1,5 +1,6 @@
 package com.example.demo.publish_subscribe;
 
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 
 /**
@@ -9,5 +10,17 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class NewsPublisher {
-
+	
+	private RabbitTemplate rabbitTemplate;
+	
+	public NewsPublisher(RabbitTemplate rabbitTemplate) {
+		this.rabbitTemplate = rabbitTemplate;
+	}
+	
+	// 發送新聞到 FanoutExchange
+	public void publishNews(String news) {
+		String routingKey = ""; // FanoutExchange 因為是廣播所以不需要設定路由鍵
+		rabbitTemplate.convertAndSend("new.fanout", routingKey, news);
+	}
+	
 }
