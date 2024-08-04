@@ -16,7 +16,7 @@ public class NewsApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		newsPublisher.publishNews("倫敦奧運-羽球金牌戰 10:00 線上直播");
+		newsPublisher.publishNews("倫敦奧運-羽球金牌戰 10:00 線上直播1");
 	}
 	
 	public static void main(String[] args) {
