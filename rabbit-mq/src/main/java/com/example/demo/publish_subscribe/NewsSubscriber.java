@@ -20,7 +20,7 @@ public class NewsSubscriber {
 	}
 	
 	// 從 news.app 隊列中接收到新聞消息(監聽 news.app 隊列)
-	@RabbitListener(queues = "news.website")
+	@RabbitListener(queues = "news.app")
 	public void reveiveFromApp(String news) {
 		System.out.println("App 收到: " + news + " " + new Date());
 	}
