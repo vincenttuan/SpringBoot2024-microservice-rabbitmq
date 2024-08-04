@@ -1,4 +1,15 @@
 Publish/Subscribe 模式
 實務案例：新聞發布系統
 在 Publish/Subscribe 模式中，一條消息可以被多個消費者接收。
+
+							 news.website				
+	                          +-------+
+	       news.fanout     +--| Queue | -> C1 網站接收新聞
+	     +-------------+   |  +-------+
+P發新聞 -> |  Exchange   |---+
+	     +-------------+   |  +-------+
+	                       +--| Queue | -> C2 App接收新聞
+	                          +-------+
+	                          news.app
+
 這種模式常用於需要廣播消息的場景，例如新聞發布。
