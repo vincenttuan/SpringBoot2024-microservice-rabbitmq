@@ -142,7 +142,34 @@ document.getElementById('fetchOrderButton').addEventListener('click', async () =
 });
 
 document.getElementById('fetchProductButton').addEventListener('click', async () => {
-    console.log('fetchProductButton 請自行練習');
-    alert('fetchProductButton 請自行練習');
+    try {
+        // 從 cookies 中讀取 JWT token
+        const token = getCookie('jwt');
+        if (!token) {
+            console.log(`JWT token 不存在，請先獲取 token。`);
+            alert('JWT token 不存在，請先獲取 token。');
+            return;
+        }
+
+        // 發送請求以驗證 JWT Token
+        const response = await fetch('http://localhost:7003/products', {
+            method: 'GET', // 使用 GET 方法
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        if (response.ok) {
+            const message = await response.text();
+            console.log(`${message}`);
+            alert(message);
+        } else {
+			console.log(`失敗: ${response.status}`);
+            alert('失敗: ' + response.status);
+        }
+    } catch (error) {
+		console.log(`錯誤: ${error}`)
+        console.error('錯誤: ', error);
+    }
 });
 
