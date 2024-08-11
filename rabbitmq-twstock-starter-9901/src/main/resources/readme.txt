@@ -31,6 +31,7 @@
 下載 https://drive.google.com/drive/folders/192hSs4zBnXVrEttBLOVOJ_8NYpxh6m3l?usp=drive_link
     下面的二個檔案
 	price.json
+	pre_price_0407.json
 	MI_5MINS_0410_INDEX.csv
 	
     並放到 C:\stock_price\ 中
