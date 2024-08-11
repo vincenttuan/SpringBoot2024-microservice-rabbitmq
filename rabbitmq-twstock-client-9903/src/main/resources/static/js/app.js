@@ -25,22 +25,6 @@ const refreshStocks = async () => {
 	const response = await fetch(fullUrl);
 	const stocks = await response.json();
 	console.log(stocks);
-	/*
-	[
-		{
-			"symbol": "2330",
-			"avgPrice": 533.0,
-			"amount": 10,
-			"profit": null
-		},
-		{
-			"symbol": "2344",
-			"avgPrice": 27.2,
-			"amount": 1,
-			"profit": null
-		}
-	]
-	*/
 	// 更新部位
 	displayStocks(stocks);
 };

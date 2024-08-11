@@ -5,13 +5,13 @@
 }
 
 .flash {
-    animation: flashBackground 0.1s; /* 动画持续时间可以根据需要调整 */
+    animation: flashBackground 0.1s; /* 動畫持續時間調整 */
 }
 
 input[type="radio"] {
     transform: scale(2); /* 放大 n 倍 */
-    margin-left: 10px; /* 调整距离 */;
-    margin-right: 10px; /* 调整距离 */
+    margin-left: 10px; /* 調整距離 */;
+    margin-right: 10px; /* 調整距離 */
 }
 
 html {
@@ -26,10 +26,10 @@ body {
 }
 
 #myChart {
-    max-width: 780px;  /* 最大宽度 */
+    max-width: 780px;  /* 最大寬度 */
     max-height: 400px; /* 最大高度 */
-    width: 100%;       /* 宽度为父元素的100%，但不超过最大宽度 */
-    height: auto;      /* 高度自动调整，保持图表的宽高比 */
+    width: 100%;       /* 寬度為父元素的100%，但不超過最大寬度 */
+    height: auto;      /* 高度自動調整，保持圖表的寬高比 */
 }
 
 #main_container {
