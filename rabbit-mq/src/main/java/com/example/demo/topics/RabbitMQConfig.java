@@ -1,5 +1,7 @@
 package com.example.demo.topics;
 
+import org.springframework.amqp.core.TopicExchange;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -9,5 +11,11 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class RabbitMQConfig {
+	
+	// TopicExchange 根據主題路由鍵將消息發送到匹配的隊列。
+	@Bean
+	public TopicExchange topicExchange() {
+		return new TopicExchange("logs.topic");
+	}
 	
 }
