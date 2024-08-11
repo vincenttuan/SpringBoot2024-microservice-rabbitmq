@@ -2,3 +2,12 @@ Topics 模式
 實務案例：日誌系統
 在 Topics 模式中，生產者將消息根據主題路由鍵發送到匹配的隊列。
 這種模式常用於需要按主題路由消息的場景，例如日誌系統。
+
+範例:
+logPublisher.publishLog("app.info", "Application started successfully.");
+logPublisher.publishLog("app.error", "Null pointer exception occurred.");
+logPublisher.publishLog("database.query", "Executed SELECT query.");
+logPublisher.publishLog("database.update", "Updated user details.");
+
+路由鍵: "app.info" 或 "app.error" => 改為 "app.#"
+路由鍵: "database.query" 或 "database.update" => 改為 "database.#"
