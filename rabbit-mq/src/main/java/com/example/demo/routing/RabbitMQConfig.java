@@ -16,8 +16,9 @@ import org.springframework.context.annotation.Configuration;
 	                       +--------->| Queue | -> C3 (orders.food)
 	                                  +-------+
 	                          
-
-
+路由鍵 digital 發配到 orders.digital 隊列中
+路由鍵 clothing 發配到 orders.clothing 隊列中
+路由鍵 food 發配到 orders.food 隊列中
 *******************************************************/
 
 /**
