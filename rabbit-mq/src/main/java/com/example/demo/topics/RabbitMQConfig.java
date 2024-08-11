@@ -1,5 +1,8 @@
 package com.example.demo.topics;
 
+import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.BindingBuilder;
+import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.core.TopicExchange;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,4 +21,23 @@ public class RabbitMQConfig {
 		return new TopicExchange("logs.topic");
 	}
 	
+	@Bean
+	public Queue appQueue() {
+		return new Queue("logs.app");
+	}
+	
+	@Bean
+	public Queue databaseQueue() {
+		return new Queue("logs.database");
+	}
+	
+	@Bean
+	public Binding bindingApp(TopicExchange topicExchange, Queue appQueue) {
+		return BindingBuilder.bind(appQueue).to(topicExchange).with("app.*");
+	}
+	
+	@Bean
+	public Binding bindingDatabase(TopicExchange topicExchange, Queue databaseQueue) {
+		return BindingBuilder.bind(databaseQueue).to(topicExchange).with("database.*");
+	}
 }
