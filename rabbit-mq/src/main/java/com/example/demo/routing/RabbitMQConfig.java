@@ -1,6 +1,9 @@
 package com.example.demo.routing;
 
+import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.DirectExchange;
+import org.springframework.amqp.core.Queue;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -35,5 +38,36 @@ public class RabbitMQConfig {
 	public DirectExchange directExchange() {
 		return new DirectExchange("orders.direct");
 	}
+	
+	// 配置一個數位產品的隊列(orders.digital)
+	@Bean
+	public Queue digitalQueue() {
+		return new Queue("orders.digital");
+	}
+	
+	// 配置一個服飾產品的隊列(orders.clothing)
+	@Bean
+	public Queue clothingQueue() {
+		return new Queue("orders.clothing");
+	}
+	
+	// 配置一個食品產品的隊列(orders.food)
+	@Bean
+	public Queue foodQueue() {
+		return new Queue("orders.food");
+	}
+	
+	// 將數位產品隊列(digitalQueue)綁定到直接交換機(directExchange) 透過路由鍵 "digital"
+	@Bean
+	public Binding bindingDigital(DirectExchange directExchange, Queue digitalQueue) {
+		return BindingBuilder.bind(digitalQueue).to(directExchange).with("digital");
+	}
+	
+	// 將服裝產品隊列(clothingQueue)綁定到直接交換機(directExchange) 透過路由鍵 "clothing"
+	@Bean
+	public Binding bindingClothing(DirectExchange directExchange, Queue clothingQueue) {
+		return BindingBuilder.bind(clothingQueue).to(directExchange).with("clothing");
+	}
+	
 	
 }
