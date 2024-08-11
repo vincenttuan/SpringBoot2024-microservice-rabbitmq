@@ -81,13 +81,7 @@ public class StockPriceService {
     @EventListener(ContextRefreshedEvent.class)
     public void makePrePriceMap() throws Exception {
     	String jsonFileFolder = null;
-    	// 判斷作業系統是否是 Windows
-    	if (System.getProperty("os.name").toLowerCase().contains("windows")) {
-    		jsonFileFolder = "C:/Users/vince/Downloads";
-    	} else {
-    		// mac os
-    		jsonFileFolder = "/Volumes/SSD/data";
-    	}
+    	jsonFileFolder = "C:/stock_price";
     	
     	String jsonFilePath = jsonFileFolder + "/pre_price_0407.json"; // json array 資訊
     	System.out.println("取得上一個交易日所有股票交易紀錄 => " + jsonFilePath);
