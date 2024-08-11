@@ -38,6 +38,6 @@ public class RabbitMQConfig {
 	
 	@Bean
 	public Binding bindingDatabase(TopicExchange topicExchange, Queue databaseQueue) {
-		return BindingBuilder.bind(databaseQueue).to(topicExchange).with("database.*");
+		return BindingBuilder.bind(databaseQueue).to(topicExchange).with("database.#");
 	}
 }
