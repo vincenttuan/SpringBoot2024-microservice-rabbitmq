@@ -17,33 +17,29 @@ public class RabbitmqConfig {
 	public FanoutExchange stockExchange() {
 		return new FanoutExchange("stock_fanout_exchange");
 	}
-	
-    // DirectExchange
-//    @Bean
-//	public DirectExchange stockExchange() {
-//		return new DirectExchange("stock_direct_exchange");
-//	}
-	
+
+	@Bean
+	public FanoutExchange replyExchange() {
+		return new FanoutExchange("reply_fanout_exchange");
+	}
+
+	@Bean
+	public FanoutExchange orderExchange() {
+		return new FanoutExchange("order_fanout_exchange");
+	}
+
+	//-------------------------------------------------------------------
+
 	@Bean
 	public Queue orderQueue() {
 		return QueueBuilder.durable("order_queue").build();
 	}
 	
-	@Bean
-	public FanoutExchange orderExchange() {
-		return new FanoutExchange("order_fanout_exchange");
-	}
 	
 	@Bean
 	public Binding binding() {
 		return BindingBuilder.bind(orderQueue()).to(orderExchange());
 	}
 	
-	//-------------------------------------------------------------------
-	
-	@Bean
-	public FanoutExchange replyExchange() {
-		return new FanoutExchange("reply_fanout_exchange");
-	}
     
 }
