@@ -41,7 +41,7 @@
 http://localhost:9901/stop <-- 停止報價
 交換機: stock_direct_exchange (設定在 RabbitmqConfig.java --> new DirectExchange("stock_direct_exchange"))
 發送時的 routing key: stock (設定在 PriceEmitterService.java --> rabbitTemplate.convertAndSend("stock_direct_exchange", "tw.stock", message))
-
+orderNo.txt 會自動產生, 用來記錄目前最新下單編號作為建立新單時的參考
 
 3. 啟動 rabbitmq-twstock-consumer-9902 (Consumer)
 觀看 console 是否有報價（接收 RabbitMQ 的資料 ）
