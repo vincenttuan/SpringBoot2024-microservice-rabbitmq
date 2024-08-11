@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<link rel="icon" href="data:;base64,iVBORw0KGgo=">
+	<link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap" rel="stylesheet">
+
+    <title>Spring Boot Tutorial - WebSocket</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/pure-min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7.0.0/bundles/stomp.umd.min.js"></script>
+	
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+	
+	<script src="./js/app.js"></script>
+    <link rel="stylesheet" href="./css/app.css" />
+</head>
+<body>
+	<div style="background-color: #FFFFFF;padding-left: 15px">
+		<h2 style="color: 000000;font-family: Ubuntu;">Spring Boot WebSocket + RabbitMQ.</h2>
+	</div>
+	<div id="main_container">
+		<div id="left_div" style="padding-right: 10px">
+			<form id="myForm" class="pure-form">
+			<fieldset>
+	            <legend>
+					訂閱股票
+	            	<input type="text" id="symbolInput" placeholder="輸入股票代號" />
+	            	<button id="subscribeBtn" type="button" class="pure-button pure-button-primary">訂閱</button>
+	            </legend>
+		        <table class="pure-table pure-table-bordered" width="100%">
+					<thead>
+						<tr>
+							<th nowrap>股票代號</th>
+							<th nowrap>成交價</th>
+							<th nowrap>成交量</th>
+							<th nowrap>買價</th>
+							<th nowrap>買量</th>
+							<th nowrap>賣價</th>
+							<th nowrap>賣量</th>
+							<th nowrap>成交時間</th>
+						</tr>
+					</thead>
+					<tbody id="receiveBody">
+						
+					</tbody>
+				</table>
+			</fieldset>    
+			</form>
+			
+			<div id="receiveMessage"></div>
+			<div class="pure-form" style="padding-top: 5px;padding-bottom: 5px;">
+				<table class="pure-table pure-table-bordered" width="100%">
+					<td style="background-color: #dddddd;color: #000000;" align="center">股票下單</td>
+					<td>
+						<input type="text" id="orderSymbolInput" placeholder="股票代號" style="width: 100px;" />
+					    <input type="radio" id="orderBuyRadio" name="orderBS" value="B" checked>買&nbsp;
+					    <input type="radio" id="orderSellRadio" name="orderBS" value="S">賣
+						<input type="number" id="orderPriceInput" placeholder="輸入價格" step="0.1" style="width: 100px;">
+					    <input type="number" id="orderAmountInput" placeholder="輸入股數" step="1" style="width: 100px;">
+					    <a id="orderSubmitBtn" class="pure-button pure-button-primary">下單</a>
+			    	</td>
+			    </table>
+			</div>
+			
+			<div id="price_container">
+				<div id="price_container_left">
+					<canvas id="myChart"></canvas>
+					<script src="./js/stock_chart.js"></script>
+				</div>
+				<div id="price_container_right" align="center">
+					<form id="myFivePricesForm" class="pure-form">
+						<fieldset>
+							<legend style="height: 32px">最佳買賣五檔</legend>
+							<table class="pure-table pure-table-bordered" width="100%">
+								<thead>
+									<tr>
+										<th nowrap>買價</th>
+										<th nowrap>量</th>
+										<th nowrap>賣價</th>
+										<th nowrap>量</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td id="five_buy_price_1">&nbsp;</td>
+										<td id="five_buy_amount_1" align="right">&nbsp;</td>
+										<td id="five_sell_price_1">&nbsp;</td>
+										<td id="five_sell_amount_1" align="right">&nbsp;</td>
+									</tr>
+									<tr>
+										<td id="five_buy_price_2">&nbsp;</td>
+										<td id="five_buy_amount_2" align="right">&nbsp;</td>
+										<td id="five_sell_price_2">&nbsp;</td>
+										<td id="five_sell_amount_2" align="right">&nbsp;</td>
+									</tr>
+									<tr>
+										<td id="five_buy_price_3">&nbsp;</td>
+										<td id="five_buy_amount_3" align="right">&nbsp;</td>
+										<td id="five_sell_price_3">&nbsp;</td>
+										<td id="five_sell_amount_3" align="right">&nbsp;</td>
+									</tr>
+									<tr>
+										<td id="five_buy_price_4">&nbsp;</td>
+										<td id="five_buy_amount_4" align="right">&nbsp;</td>
+										<td id="five_sell_price_4">&nbsp;</td>
+										<td id="five_sell_amount_4" align="right">&nbsp;</td>
+									</tr>
+									<tr>
+										<td id="five_buy_price_5">&nbsp;</td>
+										<td id="five_buy_amount_5" align="right">&nbsp;</td>
+										<td id="five_sell_price_5">&nbsp;</td>
+										<td id="five_sell_amount_5" align="right">&nbsp;</td>
+									</tr>
+								</tbody>
+							</table>
+						</fieldset>
+					</form>
+				</div>	
+			</div>
+		</div>
+			
+		<div id="right_div">
+			<form id="myReturnForm" class="pure-form">
+				<fieldset>
+		            <legend>
+						交易回報
+					</legend>
+		            <table class="pure-table pure-table-bordered" width="100%">
+						<thead>
+							<tr>
+								<th nowrap>序號</th>
+								<th nowrap>狀態</th>
+								<th nowrap>代號</th>
+								<th nowrap>買賣</th>
+								<th nowrap>委價</th>
+								<th nowrap>委量</th>
+								<th nowrap>成交</th>
+								<th nowrap>成量</th>
+							</tr>
+						</thead>
+						<tbody id="returnBody">
+							
+						</tbody>
+					</table>
+		        </fieldset>    
+			</form>
+			<form id="myStockForm" class="pure-form">
+				<fieldset>
+		            <legend>庫存部位</legend>
+		            <table class="pure-table pure-table-bordered" width="100%">
+						<thead>
+							<tr>
+								<th nowrap>代號</th>
+								<th nowrap>均價</th>
+								<th nowrap>部位</th>
+								<th nowrap>損益</th>
+							</tr>
+						</thead>
+						<tbody id="stockBody">
+							<tr>
+								<td colspan="3" align="right">總損益</td>
+								<td align="right">$ 0.00</td>
+							</tr>
+						</tbody>
+					</table>
+					
+		        </fieldset>    
+			</form>
+		</div>
+	</div>
+
+</body>
+</html>
