@@ -24,5 +24,4 @@ public class OrderApplication implements CommandLineRunner {
 		SpringApplication.run(OrderApplication.class, args);
 	}
 	
-	
 }
