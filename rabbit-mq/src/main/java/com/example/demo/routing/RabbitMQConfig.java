@@ -69,5 +69,11 @@ public class RabbitMQConfig {
 		return BindingBuilder.bind(clothingQueue).to(directExchange).with("clothing");
 	}
 	
+	// 將食品產品隊列(foodQueue)綁定到直接交換機(directExchange) 透過路由鍵 "food"
+	@Bean
+	public Binding bindingFood(DirectExchange directExchange, Queue foodQueue) {
+		return BindingBuilder.bind(foodQueue).to(directExchange).with("food");
+	}
+	
 	
 }
