@@ -6,8 +6,9 @@ Topics 模式
 範例:
 logPublisher.publishLog("app.info", "Application started successfully.");
 logPublisher.publishLog("app.error", "Null pointer exception occurred.");
-logPublisher.publishLog("database.query", "Executed SELECT query.");
 logPublisher.publishLog("database.update", "Updated user details.");
+logPublisher.publishLog("database.query.all", "Executed SELECT query.");
 
-路由鍵: "app.info" 或 "app.error" => 改為 "app.#"
+使用 # 表示匹配多個單詞，* 表示匹配一個單詞。
+路由鍵: "app.info" 或 "app.error" => 改為 "app.*"
 路由鍵: "database.query" 或 "database.update" => 改為 "database.#"
